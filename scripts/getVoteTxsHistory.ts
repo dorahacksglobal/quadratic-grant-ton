@@ -14,22 +14,49 @@ async function main() {
     const [id, tax_adjustment_multiplier, voting_unit, status, fund, project_number, total_area, contribution] =
         round.map((e: BigInt) => e.toString());
     console.log([id, tax_adjustment_multiplier, voting_unit, status, fund, project_number, total_area, contribution]);
-    const history: [any] = await tonweb.getTransactions(contractAddress);
-    const voteTxs = history.filter((h: any) => h?.in_msg?.message?.startsWith("64dMKQ"));  // VOTE 
-    console.log(voteTxs);
-    for (const tx of voteTxs) {
-        const sender = tx.in_msg.source;
-        const cellBase64 = tx.in_msg.msg_data.body;
-        const cellBuffer = Buffer.from(cellBase64, "base64");
-        const cell = Cell.fromBoc(cellBuffer)[0];
-        const votes = loadVote(cell.asSlice());
-        console.log(tx.utime, tx.transaction_id.lt, tx.transaction_id.hash, sender, votes.project_id, votes.votes);
-    }
-    for(let i = 1; i <= project_number; i++) {
-        const [id, pid, area, votes, contribution, voter_number, voters] = await tonweb.provider.call2(contractAddress, "project", [["num", i.toString()]]);
-        console.log(id, pid, area, votes, contribution, voter_number);
+
+    let i = 10;
+    let lt = NaN;
+    let hash = undefined;
+    while (i--) {
+        const history: any[] = await tonweb.getTransactions(contractAddress, 3, lt, hash);
+        if (!history || history.length === 0) {
+            break;
+        }
+        const voteTxs = history.filter((h: any) => h?.in_msg?.message?.startsWith("64dMKQ")); // VOTE
+        // console.log(voteTxs);
+        let result: any[] = [];
+        for (const tx of voteTxs) {
+            const sender = tx.in_msg.source;
+            const cellBase64 = tx.in_msg.msg_data.body;
+            const cellBuffer = Buffer.from(cellBase64, "base64");
+            const cell = Cell.fromBoc(cellBuffer)[0];
+            const votes = loadVote(cell.asSlice());
+            console.log(tx.utime, tx.transaction_id.lt, tx.transaction_id.hash, sender, votes.project_id, votes.votes);
+            const event = {
+                sender,
+                utime: tx.utime,
+                lt: tx.transaction_id.lt,
+                hash: tx.transaction_id.hash,
+                project_id: votes.project_id.toString(),
+                votes: votes.votes.toString(),
+            };
+            result = [...result, event];
+        }
+        result.sort((a, b) => a.lt - b.lt);
+        lt = result[0].lt;
+        hash = result[0].hash;
+        console.log({ lt, hash });
     }
 
+    for (let i = 1; i <= project_number; i++) {
+        const [id, pid, area, votes, contribution, voter_number, voters] = await tonweb.provider.call2(
+            contractAddress,
+            "project",
+            [["num", i.toString()]]
+        );
+        console.log(id, pid, area, votes, contribution, voter_number);
+    }
 }
 main();
 
