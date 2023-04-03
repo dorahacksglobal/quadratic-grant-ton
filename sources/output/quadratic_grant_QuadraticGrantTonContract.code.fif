@@ -1,0 +1,952 @@
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_store_address
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_store_bool
+  DECLPROC __tact_dict_get_int_int
+  DECLPROC __tact_dict_set_int_cell
+  DECLPROC __tact_dict_get_int_cell
+  DECLPROC __tact_dict_set_slice_int
+  DECLPROC __tact_dict_get_slice_int
+  DECLPROC __tact_address_eq
+  DECLPROC __gen_read_Deploy
+  DECLPROC __gen_write_DeployOk
+  DECLPROC __gen_writecell_DeployOk
+  DECLPROC __gen_write_Project
+  DECLPROC __gen_writecell_Project
+  DECLPROC __gen_read_Project
+  DECLPROC __gen_Project_as_optional
+  DECLPROC __gen_readopt_Project
+  DECLPROC __gen_read_SetFund
+  DECLPROC __gen_read_BatchUploadProjects
+  DECLPROC __gen_read_Vote
+  DECLPROC __gen_write_QuadraticGrantTonContract
+  DECLPROC __gen_read_QuadraticGrantTonContract
+  DECLPROC __gen_Project_not_null
+  DECLPROC __gen_Project_to_tuple
+  DECLPROC __gen_Project_opt_to_tuple
+  DECLPROC __gen_Project_opt_to_external
+  DECLPROC __gen_Round_to_external
+  DECLPROC __gen_read_$init$QuadraticGrantTonContract
+  DECLPROC $__gen_QuadraticGrantTonContract_init
+  DECLPROC __gen_load_QuadraticGrantTonContract
+  DECLPROC __gen_store_QuadraticGrantTonContract
+  DECLPROC $send
+  DECLPROC __gen_constructor_SendParameters$bounce_to_value_mode_body
+  DECLPROC $reply
+  DECLPROC $sqrt
+  DECLPROC __gen_constructor_Round$id_tax_adjustment_multiplier_voting_unit_status_fund_project_number_total_area_contribution
+  DECLPROC $__gen_QuadraticGrantTonContract_roundInfo
+  109093 DECLMETHOD $__gen_get_roundInfo
+  DECLPROC $__gen_QuadraticGrantTonContract_project
+  71440 DECLMETHOD $__gen_get_project
+  DECLPROC $__gen_QuadraticGrantTonContract_requireOwner
+  DECLPROC $__gen_QuadraticGrantTonContract_owner
+  83229 DECLMETHOD $__gen_get_owner
+  DECLPROC $__gen_QuadraticGrantTonContract_receive_SetFund
+  DECLPROC __gen_constructor_Project$id_pid_area_contribution_votes_voter_number_voters
+  DECLPROC __gen_constructor_SendParameters$to_value_mode
+  DECLPROC $__gen_QuadraticGrantTonContract_receive_BatchUploadProjects
+  DECLPROC $__gen_QuadraticGrantTonContract_receive_Vote
+  DECLPROC $__gen_QuadraticGrantTonContract_receive_comment_2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52
+  DECLPROC __gen_constructor_DeployOk$queryId
+  DECLPROC $__gen_QuadraticGrantTonContract_receive_Deploy
+  DECLPROC __gen_router_QuadraticGrantTonContract
+  DECLPROC recv_internal
+  113617 DECLMETHOD supported_interfaces
+  DECLPROC get_abi_ipfs
+  DECLPROC lazy_deployment_completed
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    10 PUSHPOW2
+    EQUAL
+    OVER
+    1279 PUSHINT
+    EQUAL
+    OR
+    136 THROWIFNOT
+    10 PUSHPOW2
+    EQUAL
+    137 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_store_address PROCINLINE:<{
+    __tact_verify_address INLINECALLDICT
+    STSLICER
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_store_bool PROCINLINE:<{
+    SWAP
+    1 STI
+  }>
+  __tact_dict_get_int_int PROCINLINE:<{
+    s1 s3 s3 XCHG3
+    DICTIGET
+    NULLSWAPIFNOT
+    IF:<{
+      SWAP
+      LDIX
+      DROP
+    }>ELSE<{
+      2DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_dict_set_int_cell PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      -ROT
+      DICTIDEL
+      DROP
+    }>ELSE<{
+      s1 s3 s3 XCHG3
+      DICTISETREF
+    }>
+  }>
+  __tact_dict_get_int_cell PROC:<{
+    -ROT
+    DICTIGETREF
+    NULLSWAPIFNOT
+    IFJMP:<{
+    }>
+    DROP
+    PUSHNULL
+  }>
+  __tact_dict_set_slice_int PROC:<{
+    OVER
+    ISNULL
+    IFJMP:<{
+      2DROP
+      -ROT
+      DICTDEL
+      DROP
+    }>
+    NEWC
+    SWAP
+    STIX
+    s1 s3 s3 XCHG3
+    DICTSETB
+  }>
+  __tact_dict_get_slice_int PROCINLINE:<{
+    s1 s3 s3 XCHG3
+    DICTGET
+    NULLSWAPIFNOT
+    IF:<{
+      SWAP
+      LDIX
+      DROP
+    }>ELSE<{
+      2DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_address_eq PROCINLINE:<{
+    SDEQ
+  }>
+  __gen_read_Deploy PROCINLINE:<{
+    32 LDU
+    SWAP
+    2490013878 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  __gen_write_DeployOk PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  __gen_writecell_DeployOk PROCINLINE:<{
+    NEWC
+    SWAP
+    __gen_write_DeployOk INLINECALLDICT
+    ENDC
+  }>
+  __gen_write_Project PROCREF:<{
+    s6 s7 XCHG2
+    257 PUSHINT
+    STIX
+    s1 s4 XCHG
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    NEWC
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    STDICT
+    ENDC
+    SWAP
+    STREF
+  }>
+  __gen_writecell_Project PROCINLINE:<{
+    NEWC
+    7 -ROLL
+    __gen_write_Project INLINECALLDICT
+    ENDC
+  }>
+  __gen_read_Project PROCREF:<{
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDREF
+    SWAP
+    CTOS
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDDICT
+    DROP
+    s4 s7 XCHG
+    s4 s6 XCHG
+    s4 s5 XCHG
+  }>
+  __gen_Project_as_optional PROCINLINE:<{
+    7 TUPLE
+  }>
+  __gen_readopt_Project PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      PUSHNULL
+    }>ELSE<{
+      CTOS
+      __gen_read_Project INLINECALLDICT
+      1 7 BLKDROP2
+      __gen_Project_as_optional INLINECALLDICT
+    }>
+  }>
+  __gen_read_SetFund PROCINLINE:<{
+    32 LDU
+    SWAP
+    2162894902 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  __gen_read_BatchUploadProjects PROCINLINE:<{
+    32 LDU
+    SWAP
+    2067884959 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    LDDICT
+    -ROT
+  }>
+  __gen_read_Vote PROCINLINE:<{
+    32 LDU
+    SWAP
+    3951512617 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    -ROT
+  }>
+  __gen_write_QuadraticGrantTonContract PROCINLINE:<{
+    s10 s9 XCHG2
+    __tact_store_address INLINECALLDICT
+    s1 s7 XCHG
+    32 STU
+    s1 s5 XCHG
+    257 PUSHINT
+    STIX
+    s1 s3 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    NEWC
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    257 PUSHINT
+    STIX
+    s0 s2 XCHG
+    NEWC
+    257 PUSHINT
+    STIX
+    s1 s4 XCHG
+    257 PUSHINT
+    STIX
+    s1 s2 XCHG
+    STDICT
+    ENDC
+    SWAP
+    STREF
+    ENDC
+    SWAP
+    STREF
+  }>
+  __gen_read_QuadraticGrantTonContract PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    32 LDU
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDREF
+    SWAP
+    CTOS
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDREF
+    DROP
+    CTOS
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDDICT
+    DROP
+    s6 s10 XCHG
+    s6 s9 XCHG
+    s6 s8 XCHG
+    s6 s7 XCHG
+  }>
+  __gen_Project_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+    7 UNTUPLE
+  }>
+  __gen_Project_to_tuple PROCINLINE:<{
+    7 TUPLE
+  }>
+  __gen_Project_opt_to_tuple PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      PUSHNULL
+    }>ELSE<{
+      __gen_Project_not_null INLINECALLDICT
+      __gen_Project_to_tuple INLINECALLDICT
+    }>
+  }>
+  __gen_Project_opt_to_external PROCINLINE:<{
+    __gen_Project_opt_to_tuple INLINECALLDICT
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      PUSHNULL
+    }>ELSE<{
+    }>
+  }>
+  __gen_Round_to_external PROCINLINE:<{
+  }>
+  __gen_read_$init$QuadraticGrantTonContract PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDREF
+    SWAP
+    CTOS
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    DROP
+    s2 s5 XCHG
+    s2 s4 XCHG
+    s2 s3 XCHG
+  }>
+  $__gen_QuadraticGrantTonContract_init PROCREF:<{
+    0 PUSHINT
+    s0 s0 s0 PUSH3
+    s0 s6 XCHG
+    s0 s5 XCHG
+    s4 s4 s4 XCHG3
+    PUSHNULL
+  }>
+  __gen_load_QuadraticGrantTonContract PROCINLINE:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    SWAP
+    IF:<{
+      __gen_read_QuadraticGrantTonContract INLINECALLDICT
+      1 10 BLKDROP2
+    }>ELSE<{
+      MYADDR
+      11 PLDU
+      10 PUSHPOW2
+      EQUAL
+      137 THROWIFNOT
+      __gen_read_$init$QuadraticGrantTonContract INLINECALLDICT
+      s0 s5 XCHG
+      ENDS
+      4 ROLL
+      $__gen_QuadraticGrantTonContract_init INLINECALLDICT
+    }>
+  }>
+  __gen_store_QuadraticGrantTonContract PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    10 -ROLL
+    __gen_write_QuadraticGrantTonContract INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $send PROCREF:<{
+    NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    __tact_store_bool INLINECALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+    STGRAMS
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    s5 PUSH
+    ISNULL
+    NOT
+    OR
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      NEWC
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      ENDC
+      ROT
+      STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      SWAP
+      __tact_not_null INLINECALLDICT
+      SWAP
+      STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    ENDC
+    SWAP
+    SENDRAWMSG
+  }>
+  __gen_constructor_SendParameters$bounce_to_value_mode_body PROCINLINE:<{
+    PUSHNULL
+    PUSHNULL
+  }>
+  $reply PROCREF:<{
+    TRUE
+    __tact_context_get_sender INLINECALLDICT
+    0 PUSHINT
+    ROT
+    s0 s3 XCHG
+    66 PUSHINT
+    SWAP
+    __gen_constructor_SendParameters$bounce_to_value_mode_body INLINECALLDICT
+    $send INLINECALLDICT
+  }>
+  $sqrt PROCREF:<{
+    DUP
+    0 EQINT
+    IFJMP:<{
+      DROP
+      0 PUSHINT
+    }>
+    DUP
+    4 LESSINT
+    IFJMP:<{
+      DROP
+      1 PUSHINT
+    }>
+    s0 s0 PUSH2
+    1 RSHIFT#
+    INC
+    WHILE:<{
+      s0 s1 PUSH2
+      LESS
+    }>DO<{
+      NIP
+      s0 s1 s0 PUSH3
+      DIV
+      ROT
+      ADD
+      1 RSHIFT#
+    }>
+    DROP
+    NIP
+  }>
+  __gen_constructor_Round$id_tax_adjustment_multiplier_voting_unit_status_fund_project_number_total_area_contribution PROCINLINE:<{
+  }>
+  $__gen_QuadraticGrantTonContract_roundInfo PROCREF:<{
+    DROP
+    s8 POP
+    s6 s7 XCHG
+    2 5 BLKSWAP
+    __gen_constructor_Round$id_tax_adjustment_multiplier_voting_unit_status_fund_project_number_total_area_contribution INLINECALLDICT
+  }>
+  $__gen_get_roundInfo PROC:<{
+    __gen_load_QuadraticGrantTonContract INLINECALLDICT
+    $__gen_QuadraticGrantTonContract_roundInfo INLINECALLDICT
+    __gen_Round_to_external INLINECALLDICT
+  }>
+  $__gen_QuadraticGrantTonContract_project PROCREF:<{
+    s10 s8 XCHG2
+    8 BLKDROP
+    257 PUSHINT
+    s2 POP
+    __tact_dict_get_int_cell CALLDICT
+    __gen_readopt_Project INLINECALLDICT
+  }>
+  $__gen_get_project PROC:<{
+    __gen_load_QuadraticGrantTonContract INLINECALLDICT
+    10 ROLL
+    $__gen_QuadraticGrantTonContract_project INLINECALLDICT
+    __gen_Project_opt_to_external INLINECALLDICT
+  }>
+  $__gen_QuadraticGrantTonContract_requireOwner PROCREF:<{
+    __tact_context_get_sender INLINECALLDICT
+    s10 PUSH
+    __tact_address_eq INLINECALLDICT
+    132 THROWIFNOT
+  }>
+  $__gen_QuadraticGrantTonContract_owner PROCREF:<{
+    9 BLKDROP
+  }>
+  $__gen_get_owner PROC:<{
+    __gen_load_QuadraticGrantTonContract INLINECALLDICT
+    $__gen_QuadraticGrantTonContract_owner INLINECALLDICT
+  }>
+  $__gen_QuadraticGrantTonContract_receive_SetFund PROCINLINE:<{
+    10 -ROLL
+    $__gen_QuadraticGrantTonContract_requireOwner INLINECALLDICT
+    s3 POP
+    s8 s9 XCHG
+    s7 s8 XCHG
+    s6 s7 XCHG
+    s5 s6 XCHG
+    s4 s5 XCHG
+    s3 s4 XCHG
+    ROT
+  }>
+  __gen_constructor_Project$id_pid_area_contribution_votes_voter_number_voters PROCINLINE:<{
+    s2 s3 XCHG
+  }>
+  __gen_constructor_SendParameters$to_value_mode PROCINLINE:<{
+    TRUE
+    3 -ROLL
+    PUSHNULL
+    PUSHNULL
+    PUSHNULL
+  }>
+  $__gen_QuadraticGrantTonContract_receive_BatchUploadProjects PROCINLINE:<{
+    10 2 BLKSWAP
+    $__gen_QuadraticGrantTonContract_requireOwner INLINECALLDICT
+    26909 PUSHINT
+    s5 PUSH
+    0 EQINT
+    THROWANYIFNOT
+    1 PUSHINT
+    s0 s12 XCHG
+    REPEAT:<{
+      s0 s2 XCHG
+      INC
+      257 PUSHINT
+      s11 s(-1) s(-1) PUXCPU
+      s14 s(-1) PUXC
+      __tact_dict_get_int_int INLINECALLDICT
+      __tact_not_null INLINECALLDICT
+      0 PUSHINT
+      s0 s0 s0 PUSH3
+      s5 PUSH
+      5 -ROLL
+      PUSHNULL
+      __gen_constructor_Project$id_pid_area_contribution_votes_voter_number_voters INLINECALLDICT
+      6 -ROLL
+      257 PUSHINT
+      s0 s7 XCHG
+      __gen_writecell_Project INLINECALLDICT
+      s2 PUSH
+      s3 s5 XCHG
+      SWAP
+      __tact_dict_set_int_cell INLINECALLDICT
+      s0 s11 XCHG
+      INC
+      s0 s11 XCHG
+    }>
+    s10 POP
+    s10 POP
+    __tact_context_get_sender INLINECALLDICT
+    0 PUSHINT
+    64 PUSHINT
+    __gen_constructor_SendParameters$to_value_mode INLINECALLDICT
+    $send INLINECALLDICT
+    2 8 BLKSWAP
+  }>
+  $__gen_QuadraticGrantTonContract_receive_Vote PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    s1 s3 XCHG
+    3 BLKDROP
+    26909 PUSHINT
+    s8 PUSH
+    0 EQINT
+    THROWANYIFNOT
+    s3 PUSH
+    257 PUSHINT
+    s4 PUSH
+    __tact_dict_get_int_cell CALLDICT
+    __gen_readopt_Project INLINECALLDICT
+    __gen_Project_not_null INLINECALLDICT
+    15518 PUSHINT
+    1000000000 PUSHINT
+    17 s() PUSH
+    DIV
+    s10 s(-1) PUXC
+    GEQ
+    THROWANYIFNOT
+    s8 s15 PUSH2
+    MUL
+    1000000000 PUSHINT
+    DIV
+    14329 PUSHINT
+    OVER
+    1000000000 PUSHINT
+    MUL
+    s11 PUSH
+    19 s() PUSH
+    MUL
+    EQUAL
+    THROWANYIFNOT
+    s4 s4 XCPU
+    ADD
+    s3 s9 XCPU
+    ADD
+    0 PUSHINT
+    267 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s4 PUSH
+    -ROT
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    DUP
+    ISNULL
+    NOT
+    IF:<{
+      NIP
+      __tact_not_null INLINECALLDICT
+    }>ELSE<{
+      DROP
+      s0 s3 XCHG
+      INC
+      s0 s3 XCHG
+    }>
+    s0 s5 PUXC
+    ADD
+    267 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s2 PUSH
+    s3 s5 XCHG
+    257 PUSHINT
+    __tact_dict_set_slice_int CALLDICT
+    s0 s5 XCHG
+    100 MULCONST
+    $sqrt INLINECALLDICT
+    s0 s2 XCHG
+    100 MULCONST
+    $sqrt INLINECALLDICT
+    ROT
+    SUB
+    s5 s5 XCPU
+    ADD
+    s12 s5 XCHG2
+    ADD
+    s5 s6 XCHG
+    s4 s6 XCHG
+    s3 s6 XCHG
+    s11 s11 XCHG2
+    257 PUSHINT
+    s0 s7 XCHG
+    __gen_writecell_Project INLINECALLDICT
+    s3 s5 XCHG
+    s1 s4 s0 XCHG3
+    __tact_dict_set_int_cell INLINECALLDICT
+    51754 PUSHINT
+    s2 s3 XCPU
+    SUB
+    -1 GTINT
+    s1 s2 XCHG
+    THROWANYIFNOT
+    s8 s8 XCHG2
+    ADD
+    s0 s7 XCHG
+  }>
+  $__gen_QuadraticGrantTonContract_receive_comment_2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52 PROCINLINE:<{
+    $__gen_QuadraticGrantTonContract_requireOwner INLINECALLDICT
+    s4 POP
+    s6 POP
+    1 PUSHINT
+    0 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    OVER
+    7 PUSHPOW2
+    __gen_constructor_SendParameters$to_value_mode INLINECALLDICT
+    $send INLINECALLDICT
+    s7 s7 XCHG2
+    s0 s4 XCHG
+  }>
+  __gen_constructor_DeployOk$queryId PROCINLINE:<{
+  }>
+  $__gen_QuadraticGrantTonContract_receive_Deploy PROCINLINE:<{
+    __gen_constructor_DeployOk$queryId INLINECALLDICT
+    __gen_writecell_DeployOk INLINECALLDICT
+    $reply INLINECALLDICT
+  }>
+  __gen_router_QuadraticGrantTonContract PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    s0 s2 XCHG
+    IFJMP:<{
+      2DROP
+      TRUE
+    }>
+    OVER
+    2162894902 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      __gen_read_SetFund INLINECALLDICT
+      NIP
+      $__gen_QuadraticGrantTonContract_receive_SetFund INLINECALLDICT
+      TRUE
+    }>
+    OVER
+    2067884959 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      __gen_read_BatchUploadProjects INLINECALLDICT
+      1 2 BLKDROP2
+      $__gen_QuadraticGrantTonContract_receive_BatchUploadProjects INLINECALLDICT
+      TRUE
+    }>
+    OVER
+    3951512617 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      __gen_read_Vote INLINECALLDICT
+      1 2 BLKDROP2
+      $__gen_QuadraticGrantTonContract_receive_Vote INLINECALLDICT
+      TRUE
+    }>
+    OVER
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      __gen_read_Deploy INLINECALLDICT
+      NIP
+      $__gen_QuadraticGrantTonContract_receive_Deploy INLINECALLDICT
+      TRUE
+    }>
+    SWAP
+    0 EQINT
+    IF:<{
+      HASHSU
+      19002172976572995441691845306575412661964386219686842252913295655985840081746 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $__gen_QuadraticGrantTonContract_receive_comment_2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    1 EQINT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      FALSE
+    }>
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    __gen_load_QuadraticGrantTonContract INLINECALLDICT
+    2 10 BLKSWAP
+    __gen_router_QuadraticGrantTonContract INLINECALLDICT
+    DROP
+    __gen_store_QuadraticGrantTonContract INLINECALLDICT
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+    42980537499636128163026532310500881091 PUSHINT
+    36993126140238121407019133875791708966 PUSHINT
+    209474421377847335869795010607481022628 PUSHINT
+    86142586315491086060343270784266291122 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d62704e365459717647385a4e794173577371764c6a646a776f7a4a5a7734616a377678597035335331756d52} PUSHSLICE
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+}END>c

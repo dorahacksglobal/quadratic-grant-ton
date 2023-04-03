@@ -1,0 +1,12 @@
+{
+    "projects": [
+        {
+            "name": "quadratic_grant",
+            "path": "./sources/contract.tact",
+            "output": "./sources/output",
+            "options": {
+                "debug": true
+            }
+        }
+    ]
+}

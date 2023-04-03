@@ -1,0 +1,579 @@
+#pragma version =0.4.2;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+slice __tact_verify_address(slice address) inline {
+    throw_unless(136, address.slice_bits() == 267);
+    var h = address.preload_uint(11);
+    throw_unless(136, (h == 1024) | (h == 1279));
+    throw_unless(137, h == 1024);
+    return address;
+}
+
+(slice, slice) __tact_load_address(slice cs) inline {
+    slice raw = cs~load_msg_addr();
+    return (cs, __tact_verify_address(raw));
+}
+
+builder __tact_store_address(builder b, slice address) inline {
+    return b.store_slice(__tact_verify_address(address));
+}
+
+forall X -> X __tact_not_null(X x) inline { throw_if(128, null?(x)); return x; }
+
+(cell, int) __tact_dict_delete(cell dict, int key_len, slice index) asm(index dict key_len) "DICTDEL";
+
+(slice, int) __tact_dict_get(cell dict, int key_len, slice index) asm(index dict key_len) "DICTGET" "NULLSWAPIFNOT";
+
+global (int, slice, int, slice) __tact_context;
+global slice __tact_context_sender;
+global cell __tact_context_sys;
+
+(int, slice, int, slice) __tact_context_get() inline { return __tact_context; }
+
+slice __tact_context_get_sender() inline { return __tact_context_sender; }
+
+builder __tact_store_bool(builder b, int v) inline {
+    b = b.store_int(v, 1);
+    return b;
+}
+
+int __tact_dict_get_int_int(cell d, int kl, int k, int vl) inline {
+    var (r, ok) = idict_get?(d, kl, k);
+    if (ok) {
+        return r~load_int(vl);
+    } else {
+        return null();
+    }
+}
+
+(cell, ()) __tact_dict_set_int_cell(cell d, int kl, int k, cell v) inline {
+    if (null?(v)) {
+        var (r, ok) = idict_delete?(d, kl, k);
+        return (r, ());
+    } else {
+        return (idict_set_ref(d, kl, k, v), ());
+    }
+}
+
+cell __tact_dict_get_int_cell(cell d, int kl, int k) {
+    var (r, ok) = idict_get_ref?(d, kl, k);
+    if (ok) {
+        return r;
+    } else {
+        return null();
+    }
+}
+
+(cell, ()) __tact_dict_set_slice_int(cell d, int kl, slice k, int v, int vl) {
+    if (null?(v)) {
+        var (r, ok) = __tact_dict_delete(d, kl, k);
+        return (r, ());
+    } else {
+        return (dict_set_builder(d, kl, k, begin_cell().store_int(v, vl)), ());
+    }
+}
+
+int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline {
+    var (r, ok) = __tact_dict_get(d, kl, k);
+    if (ok) {
+        return r~load_int(vl);
+    } else {
+        return null();
+    }
+}
+
+int __tact_address_eq(slice a, slice b) inline {
+    return equal_slice_bits(a, b);
+}
+
+forall X0, X1, X2, X3, X4, X5, X6 -> tuple __tact_tuple_create_7((X0, X1, X2, X3, X4, X5, X6) v) asm "7 TUPLE";
+
+forall X0, X1, X2, X3, X4, X5, X6 -> (X0, X1, X2, X3, X4, X5, X6) __tact_tuple_destroy_7(tuple v) asm "7 UNTUPLE";
+
+(slice, ((int))) __gen_read_Deploy(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+builder __gen_write_DeployOk(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell __gen_writecell_DeployOk((int) v) inline {
+    return __gen_write_DeployOk(begin_cell(), v).end_cell();
+}
+
+builder __gen_write_Project(builder build_0, (int, int, int, int, int, int, cell) v) inline_ref {
+    var (v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters) = v;
+    build_0 = build_0.store_int(v'id, 257);
+    build_0 = build_0.store_int(v'pid, 257);
+    build_0 = build_0.store_int(v'area, 257);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_int(v'votes, 257);
+    build_1 = build_1.store_int(v'contribution, 257);
+    build_1 = build_1.store_int(v'voter_number, 257);
+    build_1 = build_1.store_dict(v'voters);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell __gen_writecell_Project((int, int, int, int, int, int, cell) v) inline {
+    return __gen_write_Project(begin_cell(), v).end_cell();
+}
+
+(slice, ((int, int, int, int, int, int, cell))) __gen_read_Project(slice sc_0) inline_ref {
+    var v'id = sc_0~load_int(257);
+    var v'pid = sc_0~load_int(257);
+    var v'area = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'votes = sc_1~load_int(257);
+    var v'contribution = sc_1~load_int(257);
+    var v'voter_number = sc_1~load_int(257);
+    var v'voters = sc_1~load_dict();
+    return (sc_0, (v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters));
+}
+
+tuple __gen_Project_as_optional(((int, int, int, int, int, int, cell)) v) inline {
+    var (v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters) = v;
+    return __tact_tuple_create_7(v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters);
+}
+
+tuple __gen_readopt_Project(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return __gen_Project_as_optional(sc~__gen_read_Project());
+}
+
+(slice, ((int))) __gen_read_SetFund(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2162894902);
+    var v'fund = sc_0~load_int(257);
+    return (sc_0, (v'fund));
+}
+
+(slice, ((int, cell))) __gen_read_BatchUploadProjects(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2067884959);
+    var v'count = sc_0~load_int(257);
+    var v'projects = sc_0~load_dict();
+    return (sc_0, (v'count, v'projects));
+}
+
+(slice, ((int, int))) __gen_read_Vote(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3951512617);
+    var v'project_id = sc_0~load_int(257);
+    var v'votes = sc_0~load_int(257);
+    return (sc_0, (v'project_id, v'votes));
+}
+
+builder __gen_write_QuadraticGrantTonContract(builder build_0, (slice, int, int, int, int, int, int, int, int, cell) v) inline {
+    var (v'owner, v'id, v'contribution, v'tax_adjustment_multiplier, v'voting_unit, v'status, v'fund, v'project_number, v'total_area, v'projects) = v;
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = build_0.store_uint(v'id, 32);
+    build_0 = build_0.store_int(v'contribution, 257);
+    build_0 = build_0.store_int(v'tax_adjustment_multiplier, 257);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_int(v'voting_unit, 257);
+    build_1 = build_1.store_int(v'status, 257);
+    build_1 = build_1.store_int(v'fund, 257);
+    var build_2 = begin_cell();
+    build_2 = build_2.store_int(v'project_number, 257);
+    build_2 = build_2.store_int(v'total_area, 257);
+    build_2 = build_2.store_dict(v'projects);
+    build_1 = store_ref(build_1, build_2.end_cell());
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, ((slice, int, int, int, int, int, int, int, int, cell))) __gen_read_QuadraticGrantTonContract(slice sc_0) inline {
+    var v'owner = sc_0~__tact_load_address();
+    var v'id = sc_0~load_uint(32);
+    var v'contribution = sc_0~load_int(257);
+    var v'tax_adjustment_multiplier = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'voting_unit = sc_1~load_int(257);
+    var v'status = sc_1~load_int(257);
+    var v'fund = sc_1~load_int(257);
+    slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'project_number = sc_2~load_int(257);
+    var v'total_area = sc_2~load_int(257);
+    var v'projects = sc_2~load_dict();
+    return (sc_0, (v'owner, v'id, v'contribution, v'tax_adjustment_multiplier, v'voting_unit, v'status, v'fund, v'project_number, v'total_area, v'projects));
+}
+
+((int, int, int, int, int, int, cell)) __gen_Project_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (int vvv'id, int vvv'pid, int vvv'area, int vvv'votes, int vvv'contribution, int vvv'voter_number, cell vvv'voters) = __tact_tuple_destroy_7(v);
+    return (vvv'id, vvv'pid, vvv'area, vvv'votes, vvv'contribution, vvv'voter_number, vvv'voters);
+}
+
+tuple __gen_Project_to_tuple(((int, int, int, int, int, int, cell)) v) inline {
+    var (v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters) = v;
+    return __tact_tuple_create_7(v'id, v'pid, v'area, v'votes, v'contribution, v'voter_number, v'voters);
+}
+
+tuple __gen_Project_opt_to_tuple(tuple v) inline {
+    if (null?(v)) { return null(); } 
+    return __gen_Project_to_tuple(__gen_Project_not_null(v)); 
+}
+
+tuple __gen_Project_opt_to_external(tuple v) inline {
+    var loaded = __gen_Project_opt_to_tuple(v);
+    if (null?(loaded)) {
+        return null();
+    } else {
+        return (loaded);
+    }
+}
+
+(int, int, int, int, int, int, int, int) __gen_Round_to_external(((int, int, int, int, int, int, int, int)) v) inline {
+    var (v'id, v'tax_adjustment_multiplier, v'voting_unit, v'status, v'fund, v'project_number, v'total_area, v'contribution) = v; 
+    return (v'id, v'tax_adjustment_multiplier, v'voting_unit, v'status, v'fund, v'project_number, v'total_area, v'contribution);
+}
+
+(slice, ((slice, int, int, int, int))) __gen_read_$init$QuadraticGrantTonContract(slice sc_0) inline {
+    var v'owner = sc_0~__tact_load_address();
+    var v'id = sc_0~load_int(257);
+    var v'tax_adjustment_multiplier = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'voting_unit = sc_1~load_int(257);
+    var v'fund = sc_1~load_int(257);
+    return (sc_0, (v'owner, v'id, v'tax_adjustment_multiplier, v'voting_unit, v'fund));
+}
+
+(slice, int, int, int, int, int, int, int, int, cell) $__gen_QuadraticGrantTonContract_init(slice $owner, int $id, int $tax_adjustment_multiplier, int $voting_unit, int $fund) impure inline_ref {
+    var (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)) = (null(), null(), null(), null(), null(), null(), null(), null(), null(), null());
+    $self'owner = $owner;
+    $self'id = $id;
+    $self'tax_adjustment_multiplier = $tax_adjustment_multiplier;
+    $self'voting_unit = $voting_unit;
+    $self'fund = $fund;
+    $self'contribution = 0;
+    $self'project_number = 0;
+    $self'total_area = 0;
+    $self'projects = null();
+    $self'status = 0;
+    return ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects);
+}
+
+(slice, int, int, int, int, int, int, int, int, cell) __gen_load_QuadraticGrantTonContract() impure inline {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~__gen_read_QuadraticGrantTonContract();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (slice owner, int id, int tax_adjustment_multiplier, int voting_unit, int fund) = $sc~__gen_read_$init$QuadraticGrantTonContract();
+        $sc.end_parse();
+        return $__gen_QuadraticGrantTonContract_init(owner, id, tax_adjustment_multiplier, voting_unit, fund);
+    }
+}
+
+() __gen_store_QuadraticGrantTonContract((slice, int, int, int, int, int, int, int, int, cell) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = __gen_write_QuadraticGrantTonContract(b, v);
+    set_data(b.end_cell());
+}
+
+() $send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref {
+    var (($params'bounce, $params'to, $params'value, $params'mode, $params'body, $params'code, $params'data)) = $params;
+    builder $b = begin_cell();
+    $b = store_int($b, 1, 2);
+    $b = __tact_store_bool($b, $params'bounce);
+    $b = store_int($b, 0, 3);
+    $b = __tact_store_address($b, $params'to);
+    $b = store_coins($b, $params'value);
+    $b = store_int($b, 0, ((((1 + 4) + 4) + 64) + 32));
+    if (((~ null?($params'code)) | (~ null?($params'data)))) {
+        $b = __tact_store_bool($b, true);
+        builder $bc = begin_cell();
+        $bc = __tact_store_bool($bc, false);
+        $bc = __tact_store_bool($bc, false);
+        if ((~ null?($params'code))) {
+            $bc = __tact_store_bool($bc, true);
+            $bc = store_ref($bc, __tact_not_null($params'code));
+        } else {
+            $bc = __tact_store_bool($bc, false);
+        }
+        if ((~ null?($params'data))) {
+            $bc = __tact_store_bool($bc, true);
+            $bc = store_ref($bc, __tact_not_null($params'data));
+        } else {
+            $bc = __tact_store_bool($bc, false);
+        }
+        $bc = __tact_store_bool($bc, false);
+        $b = __tact_store_bool($b, true);
+        $b = store_ref($b, end_cell($bc));
+    } else {
+        $b = __tact_store_bool($b, false);
+    }
+    cell $body = $params'body;
+    if ((~ null?($body))) {
+        $b = __tact_store_bool($b, true);
+        $b = store_ref($b, __tact_not_null($body));
+    } else {
+        $b = __tact_store_bool($b, false);
+    }
+    cell $c = end_cell($b);
+    send_raw_message($c, $params'mode);
+}
+
+((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$bounce_to_value_mode_body(int bounce, slice to, int value, int mode, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+() $reply(cell $body) impure inline_ref {
+    $send(__gen_constructor_SendParameters$bounce_to_value_mode_body(true, __tact_context_get_sender(), 0, (64 + 2), $body));
+}
+
+int $sqrt(int $x) impure inline_ref {
+    if (($x == 0)) {
+        return 0;
+    }
+    if (($x < 4)) {
+        return 1;
+    }
+    int $r = $x;
+    int $t = (($x / 2) + 1);
+    while (($t < $r)) {
+        $r = $t;
+        $t = ((($x / $t) + $t) / 2);
+    }
+    return $r;
+}
+
+((int, int, int, int, int, int, int, int)) __gen_constructor_Round$id_tax_adjustment_multiplier_voting_unit_status_fund_project_number_total_area_contribution(int id, int tax_adjustment_multiplier, int voting_unit, int status, int fund, int project_number, int total_area, int contribution) inline {
+    return (id, tax_adjustment_multiplier, voting_unit, status, fund, project_number, total_area, contribution);
+}
+
+(int, int, int, int, int, int, int, int) $__gen_QuadraticGrantTonContract_roundInfo((slice, int, int, int, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)) = $self;
+    return __gen_constructor_Round$id_tax_adjustment_multiplier_voting_unit_status_fund_project_number_total_area_contribution($self'id, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'contribution);
+}
+
+_ $__gen_get_roundInfo() method_id(109093) {
+    var self = __gen_load_QuadraticGrantTonContract();
+    var res = $__gen_QuadraticGrantTonContract_roundInfo(self);
+    return __gen_Round_to_external(res);
+}
+
+tuple $__gen_QuadraticGrantTonContract_project((slice, int, int, int, int, int, int, int, int, cell) $self, int $project_id) impure inline_ref {
+    var (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)) = $self;
+    return __gen_readopt_Project(__tact_dict_get_int_cell($self'projects, 257, $project_id));
+}
+
+_ $__gen_get_project(int $$project_id) method_id(71440) {
+    int $project_id = $$project_id;
+    var self = __gen_load_QuadraticGrantTonContract();
+    var res = $__gen_QuadraticGrantTonContract_project(self, $project_id);
+    return __gen_Project_opt_to_external(res);
+}
+
+((slice, int, int, int, int, int, int, int, int, cell), ()) $__gen_QuadraticGrantTonContract_requireOwner((slice, int, int, int, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)) = $self;
+    throw_unless(132, __tact_address_eq(__tact_context_get_sender(), $self'owner));
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+slice $__gen_QuadraticGrantTonContract_owner((slice, int, int, int, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)) = $self;
+    return $self'owner;
+}
+
+_ $__gen_get_owner() method_id(83229) {
+    var self = __gen_load_QuadraticGrantTonContract();
+    var res = $__gen_QuadraticGrantTonContract_owner(self);
+    return res;
+}
+
+(((slice, int, int, int, int, int, int, int, int, cell)), ()) $__gen_QuadraticGrantTonContract_receive_SetFund((slice, int, int, int, int, int, int, int, int, cell) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects) = $self;
+    var ($msg'fund) = $msg;
+    ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)~$__gen_QuadraticGrantTonContract_requireOwner();
+    $self'fund = $msg'fund;
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+((int, int, int, int, int, int, cell)) __gen_constructor_Project$id_pid_area_contribution_votes_voter_number_voters(int id, int pid, int area, int contribution, int votes, int voter_number, cell voters) inline {
+    return (id, pid, area, votes, contribution, voter_number, voters);
+}
+
+((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode(slice to, int value, int mode) inline {
+    return (true, to, value, mode, null(), null(), null());
+}
+
+(((slice, int, int, int, int, int, int, int, int, cell)), ()) $__gen_QuadraticGrantTonContract_receive_BatchUploadProjects((slice, int, int, int, int, int, int, int, int, cell) $self, (int, cell) $msg) impure inline {
+    var ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects) = $self;
+    var ($msg'count, $msg'projects) = $msg;
+    ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)~$__gen_QuadraticGrantTonContract_requireOwner();
+    throw_unless(26909, ($self'status == 0));
+    int $project_number = $self'project_number;
+    int $i = 1;
+    repeat ($msg'count) {
+        $project_number = ($project_number + 1);
+        var ($project'id, $project'pid, $project'area, $project'votes, $project'contribution, $project'voter_number, $project'voters) = __gen_constructor_Project$id_pid_area_contribution_votes_voter_number_voters($project_number, __tact_not_null(__tact_dict_get_int_int($msg'projects, 257, $i, 257)), 0, 0, 0, 0, null());
+        $self'projects~__tact_dict_set_int_cell(257, $project_number, __gen_writecell_Project(($project'id, $project'pid, $project'area, $project'votes, $project'contribution, $project'voter_number, $project'voters)));
+        $i = ($i + 1);
+    }
+    $self'project_number = $project_number;
+    $send(__gen_constructor_SendParameters$to_value_mode(__tact_context_get_sender(), 0, 64));
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+(((slice, int, int, int, int, int, int, int, int, cell)), ()) $__gen_QuadraticGrantTonContract_receive_Vote((slice, int, int, int, int, int, int, int, int, cell) $self, (int, int) $msg) impure inline {
+    var ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects) = $self;
+    var ($msg'project_id, $msg'votes) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(26909, ($self'status == 0));
+    var ($project'id, $project'pid, $project'area, $project'votes, $project'contribution, $project'voter_number, $project'voters) = __gen_Project_not_null(__gen_readopt_Project(__tact_dict_get_int_cell($self'projects, 257, $msg'project_id)));
+    int $amount = $msg'votes;
+    throw_unless(15518, ($amount >= (1000000000 / $self'voting_unit)));
+    int $votes = (($amount * $self'voting_unit) / 1000000000);
+    throw_unless(14329, (($votes * 1000000000) == ($amount * $self'voting_unit)));
+    $project'votes = ($project'votes + $votes);
+    $project'contribution = ($project'contribution + $amount);
+    int $old_votes = 0;
+    int $_old_votes = __tact_dict_get_slice_int($project'voters, 267, __tact_context_get_sender(), 257);
+    if ((~ null?($_old_votes))) {
+        $old_votes = __tact_not_null($_old_votes);
+    } else {
+        $project'voter_number = ($project'voter_number + 1);
+    }
+    int $new_votes = ($old_votes + $votes);
+    $project'voters~__tact_dict_set_slice_int(267, __tact_context_get_sender(), $new_votes, 257);
+    int $old_area = $sqrt(($old_votes * 100));
+    int $new_area = $sqrt(($new_votes * 100));
+    int $area_diff = ($new_area - $old_area);
+    $project'area = ($project'area + $area_diff);
+    $self'total_area = ($self'total_area + $area_diff);
+    $self'projects~__tact_dict_set_int_cell(257, $msg'project_id, __gen_writecell_Project(($project'id, $project'pid, $project'area, $project'votes, $project'contribution, $project'voter_number, $project'voters)));
+    throw_unless(51754, (($ctx'value - $amount) >= 0));
+    $self'contribution = ($self'contribution + $amount);
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+((slice, int, int, int, int, int, int, int, int, cell), ()) $__gen_QuadraticGrantTonContract_receive_comment_2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52((slice, int, int, int, int, int, int, int, int, cell) $self) impure inline {
+    var ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects) = $self;
+    ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects)~$__gen_QuadraticGrantTonContract_requireOwner();
+    $self'status = 1;
+    $self'contribution = 0;
+    $send(__gen_constructor_SendParameters$to_value_mode(__tact_context_get_sender(), 0, 128));
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+((int)) __gen_constructor_DeployOk$queryId(int queryId) inline {
+    return (queryId);
+}
+
+(((slice, int, int, int, int, int, int, int, int, cell)), ()) $__gen_QuadraticGrantTonContract_receive_Deploy((slice, int, int, int, int, int, int, int, int, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects) = $self;
+    var ($deploy'queryId) = $deploy;
+    $reply(__gen_writecell_DeployOk(__gen_constructor_DeployOk$queryId($deploy'queryId)));
+    return (($self'owner, $self'id, $self'contribution, $self'tax_adjustment_multiplier, $self'voting_unit, $self'status, $self'fund, $self'project_number, $self'total_area, $self'projects), ());
+}
+
+((slice, int, int, int, int, int, int, int, int, cell), int) __gen_router_QuadraticGrantTonContract((slice, int, int, int, int, int, int, int, int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Receive SetFund message
+    if (op == 2162894902) {
+        var msg = in_msg~__gen_read_SetFund();
+        self~$__gen_QuadraticGrantTonContract_receive_SetFund(msg);
+        return (self, true);
+    }
+    
+    ;; Receive BatchUploadProjects message
+    if (op == 2067884959) {
+        var msg = in_msg~__gen_read_BatchUploadProjects();
+        self~$__gen_QuadraticGrantTonContract_receive_BatchUploadProjects(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Vote message
+    if (op == 3951512617) {
+        var msg = in_msg~__gen_read_Vote();
+        self~$__gen_QuadraticGrantTonContract_receive_Vote(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~__gen_read_Deploy();
+        self~$__gen_QuadraticGrantTonContract_receive_Deploy(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "EndRound" message
+        if (text_op == 0x2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52) {
+            self~$__gen_QuadraticGrantTonContract_receive_comment_2a02d948cfb1ebbdd8236744f903a7b5d8a0c956cad552f30b9b1d0e96db4b52();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = ((msg_flags & 1) == 1 ? true : false);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = __gen_load_QuadraticGrantTonContract();
+    
+    ;; Handle operation
+    int handled = self~__gen_router_QuadraticGrantTonContract(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(handled, 130);
+    
+    ;; Persist state
+    __gen_store_QuadraticGrantTonContract(self);
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.debug.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128,
+        "org.ton.ownable"H >> 128
+    );
+}
+
+_ get_abi_ipfs() {
+    return "ipfs://QmbpN6TYqvG8ZNyAsWsqvLjdjwozJZw4aj7vxYp53S1umR";
+}
+
+_ lazy_deployment_completed() {
+    return get_data().begin_parse().load_int(1);
+}

@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`contract should process correctly 1`] = `
+[
+  {
+    "$seq": 0,
+    "events": [
+      {
+        "$type": "deploy",
+      },
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{946A98B60000000000000000}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 1000000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 11111n,
+      },
+      {
+        "$type": "sent",
+        "messages": [
+          {
+            "body": {
+              "cell": "x{AFF90F570000000000000000}",
+              "type": "cell",
+            },
+            "bounce": true,
+            "from": "@contract",
+            "to": "@treasure(owner)",
+            "type": "internal",
+            "value": 987693000n,
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
+
+exports[`contract should process correctly 3`] = `
+[
+  {
+    "$seq": 1,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{7B416B9F00000000000000000000000000000000000000000000000000000000000000016_}
+ x{CFF}
+  x{50000000000000000000000000000000000000000000000000000000000000000C_}
+  x{400000000000000000000000000000000000000000000000000000000000000014_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 100000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 18369n,
+      },
+      {
+        "$type": "sent",
+        "messages": [
+          {
+            "body": {
+              "type": "empty",
+            },
+            "bounce": true,
+            "from": "@contract",
+            "to": "@treasure(owner)",
+            "type": "internal",
+            "value": 80631000n,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "$seq": 2,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{7B416B9F0000000000000000000000000000000000000000000000000000000000000000E_}
+ x{A0200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001C_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 100000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 15649n,
+      },
+      {
+        "$type": "sent",
+        "messages": [
+          {
+            "body": {
+              "type": "empty",
+            },
+            "bounce": true,
+            "from": "@contract",
+            "to": "@treasure(owner)",
+            "type": "internal",
+            "value": 83351000n,
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
+
+exports[`contract should process correctly 4`] = `
+{
+  "$$type": "Round",
+  "contribution": 0n,
+  "fund": 4000n,
+  "id": 1n,
+  "project_number": 3n,
+  "status": 0n,
+  "tax_adjustment_multiplier": 10n,
+  "total_area": 0n,
+  "voting_unit": 10n,
+}
+`;
+
+exports[`contract should process correctly 6`] = `
+[
+  {
+    "$seq": 3,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{EB874C2900000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000017D784002_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(non-owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 1600000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 17785n,
+      },
+    ],
+  },
+  {
+    "$seq": 4,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{EB874C290000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000D693A402_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(non-owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 900000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 19563n,
+      },
+    ],
+  },
+  {
+    "$seq": 5,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{EB874C2900000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000017D784002_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(non-owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 1600000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 18410n,
+      },
+    ],
+  },
+  {
+    "$seq": 6,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{EB874C290000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000D693A402_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 900000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 18716n,
+      },
+    ],
+  },
+]
+`;
+
+exports[`contract should process correctly 7`] = `
+{
+  "$$type": "Round",
+  "contribution": 5000000000n,
+  "fund": 4000n,
+  "id": 1n,
+  "project_number": 3n,
+  "status": 0n,
+  "tax_adjustment_multiplier": 10n,
+  "total_area": 120n,
+  "voting_unit": 10n,
+}
+`;
+
+exports[`contract should process correctly 9`] = `
+[
+  {
+    "$seq": 7,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "cell": "x{7B416B9F0000000000000000000000000000000000000000000000000000000000000000E_}
+ x{A0200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001C_}",
+            "type": "cell",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 100000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 15049n,
+      },
+      {
+        "$type": "sent",
+        "messages": [
+          {
+            "body": {
+              "type": "empty",
+            },
+            "bounce": true,
+            "from": "@contract",
+            "to": "@treasure(owner)",
+            "type": "internal",
+            "value": 83951000n,
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
+
+exports[`contract should process correctly 11`] = `
+{
+  "$$type": "Project",
+  "area": 80n,
+  "contribution": 3400000000n,
+  "id": 1n,
+  "pid": 1n,
+  "voter_number": 2n,
+  "voters": Dictionary {
+    "_key": {
+      "bits": 267,
+      "parse": [Function],
+      "serialize": [Function],
+    },
+    "_map": Map {
+      "a:EQAI-3FJVc_ywSuY4vq0bYrzR7S4Och4y7bTU_i5yLOB3LUF" => 9n,
+      "a:EQCVnZ1On-Ja4xfAfMbsq--jatb5sNnOUN421AHaXbebcJ4N" => 25n,
+    },
+    "_value": {
+      "parse": [Function],
+      "serialize": [Function],
+    },
+  },
+  "votes": 34n,
+}
+`;
+
+exports[`contract should process correctly 12`] = `
+{
+  "$$type": "Project",
+  "area": 40n,
+  "contribution": 1600000000n,
+  "id": 2n,
+  "pid": 2n,
+  "voter_number": 1n,
+  "voters": Dictionary {
+    "_key": {
+      "bits": 267,
+      "parse": [Function],
+      "serialize": [Function],
+    },
+    "_map": Map {
+      "a:EQCVnZ1On-Ja4xfAfMbsq--jatb5sNnOUN421AHaXbebcJ4N" => 16n,
+    },
+    "_value": {
+      "parse": [Function],
+      "serialize": [Function],
+    },
+  },
+  "votes": 16n,
+}
+`;
+
+exports[`contract should process correctly 13`] = `
+{
+  "$$type": "Project",
+  "area": 0n,
+  "contribution": 0n,
+  "id": 3n,
+  "pid": 3n,
+  "voter_number": 0n,
+  "voters": Dictionary {
+    "_key": {
+      "bits": 267,
+      "parse": [Function],
+      "serialize": [Function],
+    },
+    "_map": Map {},
+    "_value": {
+      "parse": [Function],
+      "serialize": [Function],
+    },
+  },
+  "votes": 0n,
+}
+`;
+
+exports[`contract should process correctly 14`] = `
+[
+  {
+    "$seq": 8,
+    "events": [
+      {
+        "$type": "received",
+        "message": {
+          "body": {
+            "text": "EndRound",
+            "type": "text",
+          },
+          "bounce": true,
+          "from": "@treasure(owner)",
+          "to": "@contract",
+          "type": "internal",
+          "value": 1000000000n,
+        },
+      },
+      {
+        "$type": "processed",
+        "gasUsed": 11182n,
+      },
+      {
+        "$type": "sent",
+        "messages": [
+          {
+            "body": {
+              "type": "empty",
+            },
+            "bounce": true,
+            "from": "@contract",
+            "to": "@treasure(owner)",
+            "type": "internal",
+            "value": 5913344000n,
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
