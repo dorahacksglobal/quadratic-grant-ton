@@ -1,4 +1,4 @@
-// yarn blueprint run contract.uploadprojects EQAdqGep-5m0Y8GJ_ad0SpOXRwiptuN-yB3yIlXbtAJSM4yU --testnet --tonconnect
+// yarn blueprint run contract.endround EQAdqGep-5m0Y8GJ_ad0SpOXRwiptuN-yB3yIlXbtAJSM4yU --testnet --tonconnect
 import { Address, Dictionary, toNano } from "ton-core";
 import { QuadraticGrantTonContract } from "../sources/output/quadratic_grant_QuadraticGrantTonContract";
 import { NetworkProvider } from "@ton-community/blueprint";
@@ -20,9 +20,8 @@ export async function run(provider: NetworkProvider, args: string[]) {
             value: toNano("0.05"),
         },
         {
-            $$type: "BatchUploadProjects",
-            count: 2n,
-            projects: Dictionary.empty<bigint, bigint>().set(1n, 413n).set(2n, 414n),
+            $$type: "SetFund",
+            fund: toNano(4000)
         }
     );
     (BigInt.prototype as any).toJSON = function () {

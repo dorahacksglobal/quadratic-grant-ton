@@ -9,7 +9,8 @@
     "p": "blueprint run contract.getproject --testnet --tonconnect",
     "b": "blueprint run contract.getbalance --testnet --tonconnect",
     "v": "blueprint run contract.vote --testnet --tonconnect",
-    "e": "blueprint run contract.endround --testnet --tonconnect"
+    "f": "blueprint run contract.endround --testnet --tonconnect",
+    "e": "blueprint run contract.setfund --testnet --tonconnect"
   },
   "dependencies": {
     "@tact-lang/compiler": "^1.0.0",

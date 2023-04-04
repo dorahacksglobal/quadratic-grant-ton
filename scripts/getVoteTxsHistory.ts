@@ -19,11 +19,11 @@ async function main() {
     let lt = NaN;
     let hash = undefined;
     while (i--) {
-        const history: any[] = await tonweb.getTransactions(contractAddress, 3, lt, hash);
-        if (!history || history.length === 0) {
+        const history: any[] = await tonweb.getTransactions(contractAddress, 25, lt, hash);
+        const voteTxs = history.filter((h: any) => h?.in_msg?.message?.startsWith("64dMKQ")); // VOTE
+        if (!voteTxs || voteTxs.length === 1) {
             break;
         }
-        const voteTxs = history.filter((h: any) => h?.in_msg?.message?.startsWith("64dMKQ")); // VOTE
         // console.log(voteTxs);
         let result: any[] = [];
         for (const tx of voteTxs) {
